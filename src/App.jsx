@@ -15,41 +15,40 @@ import AppLayout from './ui/AppLayout'
 //We need to create a new router using the syntax below.
 //This is a function where we define our routes.
 //We do that by passing in an array of objects where each object is one route.
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+    [
+        {
+            element: <AppLayout />,
+            errorElement: <Error />,
+            children: [
+                { path: '/', element: <Home /> },
+                {
+                    path: '/menu',
+                    element: <Menu />,
+                    loader: menuLoader,
+                    errorElement: <Error />,
+                },
+                { path: '/cart', element: <Cart /> },
+                {
+                    path: '/order/new',
+                    element: <CreateOrder />,
+                    action: createOrderAction,
+                },
+                {
+                    path: '/order/:orderId',
+                    element: <Order />,
+                    loader: orderLoader,
+                    errorElement: <Error />,
+                    action: updateOrderAction,
+                },
+            ],
+        },
+    ],
     {
-        //This is the parent route of every other route in our application.
-        element: <AppLayout />,
-        errorElement: <Error />,
-        //The way that we define nested routes is by using the children property. All these other routes are child routes of AppLayout.
-        children: [
-            {
-                path: '/',
-                element: <Home />,
-            },
-            {
-                //We are calling the API right here which is a good thing we want each route to call their API in a central location like here.
-                //Notice we specified that the loader (Fetching Data) is specifically for the menu hence why its called menuLoader.
-                path: '/menu',
-                element: <Menu />,
-                loader: menuLoader,
-                errorElement: <Error />,
-            },
-            { path: '/cart', element: <Cart /> },
-            {
-                path: '/order/new',
-                element: <CreateOrder />,
-                action: createOrderAction,
-            },
-            {
-                path: '/order/:orderId',
-                element: <Order />,
-                loader: orderLoader,
-                errorElement: <Error />,
-                action: updateOrderAction,
-            },
-        ],
-    },
-])
+        basename: '/react-pizza', // Add the base path here
+    }
+)
+
 
 //Here we provide that router object using the RouterProvider component
 function App() {
